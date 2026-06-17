@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mypersonalnotes/Screens/login_screen.dart';
+import 'package:mypersonalnotes/Screens/notes_screen.dart';
 import 'package:mypersonalnotes/Services/auth_service.dart';
 import 'package:mypersonalnotes/Widgets/input_field.dart';
 import '../Widgets/social_button.dart';
@@ -180,9 +181,10 @@ class _RegiserationScreenState extends State<RegiserationScreen> {
 
                             if (!context.mounted) return;
 
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Registration successful!'),
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NotesScreen(),
                               ),
                             );
                           } catch (error) {
@@ -235,13 +237,12 @@ class _RegiserationScreenState extends State<RegiserationScreen> {
                           onTap: () {
                             try {
                               final cred = AuthService().signInWithGoogle();
-                              if (cred != null) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Google Sign-In successful!'),
-                                  ),
-                                );
-                              }
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => NotesScreen(),
+                                ),
+                              );
                             } catch (e) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
