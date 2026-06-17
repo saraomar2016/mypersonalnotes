@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mypersonalnotes/Screens/login_screen.dart';
+import 'package:mypersonalnotes/Screens/splash_screen.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -78,9 +79,7 @@ class MyApp extends StatelessWidget {
             );
           }
 
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
+          return const Scaffold(body: Center(child: SplashScreen()));
         },
       ),
     );

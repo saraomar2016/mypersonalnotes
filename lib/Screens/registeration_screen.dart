@@ -76,7 +76,7 @@ class _RegiserationScreenState extends State<RegiserationScreen> {
                     const SizedBox(height: 24),
 
                     const Text(
-                      'Welcome to My Personal Notes',
+                      'Welcome to NoteAura ✨✨',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
