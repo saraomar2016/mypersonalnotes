@@ -1,17 +1,17 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:mypersonalnotes/Screens/login_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:mypersonalnotes/Screens/registeration_screen.dart';
 import 'package:mypersonalnotes/Widgets/input_field.dart';
-import '../Widgets/social_button.dart';
+import 'package:mypersonalnotes/Widgets/social_button.dart';
 
-class RegiserationScreen extends StatefulWidget {
-  const RegiserationScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<RegiserationScreen> createState() => _RegiserationScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _RegiserationScreenState extends State<RegiserationScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isPasswordHidden = true;
@@ -88,7 +88,7 @@ class _RegiserationScreenState extends State<RegiserationScreen> {
                     const SizedBox(height: 10),
 
                     const Text(
-                      'Sign Up',
+                      'Login',
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -111,6 +111,7 @@ class _RegiserationScreenState extends State<RegiserationScreen> {
                     ),
 
                     const SizedBox(height: 8),
+
                     InputField(
                       controller: _usernameController,
                       hintText: 'Enter your Username or E-Mail',
@@ -152,6 +153,7 @@ class _RegiserationScreenState extends State<RegiserationScreen> {
                         },
                       ),
                     ),
+
                     const SizedBox(height: 32),
 
                     SizedBox(
@@ -172,7 +174,7 @@ class _RegiserationScreenState extends State<RegiserationScreen> {
 
                           try {
                             await FirebaseAuth.instance
-                                .createUserWithEmailAndPassword(
+                                .signInWithEmailAndPassword(
                                   email: username,
                                   password: password,
                                 );
@@ -181,16 +183,14 @@ class _RegiserationScreenState extends State<RegiserationScreen> {
 
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text('Registration successful!'),
+                                content: Text('Login successful!'),
                               ),
                             );
                           } catch (error) {
                             if (!context.mounted) return;
 
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Registration error: $error'),
-                              ),
+                              SnackBar(content: Text('Login error: $error')),
                             );
                           }
                         },
@@ -202,7 +202,7 @@ class _RegiserationScreenState extends State<RegiserationScreen> {
                           backgroundColor: const Color(0xFFFF4EC8),
                         ),
                         child: const Text(
-                          'Sign Up',
+                          'Login',
                           style: TextStyle(fontSize: 16, color: Colors.white),
                         ),
                       ),
@@ -251,21 +251,22 @@ class _RegiserationScreenState extends State<RegiserationScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
-                          'Already have an account?',
+                          'Don\'t have an account?',
                           style: TextStyle(fontSize: 14),
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: 10),
                         GestureDetector(
                           onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const LoginScreen(),
+                                builder: (context) =>
+                                    const RegiserationScreen(),
                               ),
                             );
                           },
                           child: const Text(
-                            'Login',
+                            'Sign Up',
                             style: TextStyle(
                               fontSize: 14,
                               color: Color(0xFFFF4EC8),

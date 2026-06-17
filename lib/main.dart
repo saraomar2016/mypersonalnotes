@@ -1,12 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:mypersonalnotes/Screens/registeration_screen.dart';
+import 'package:mypersonalnotes/Screens/login_screen.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-Future<void> main() async {
+late final Future<FirebaseApp> _firebaseInitialization;
+
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  _firebaseInitialization = _initializeFirebase();
   runApp(const MyApp());
+}
+
+Future<FirebaseApp> _initializeFirebase() async {
+  if (Firebase.apps.isNotEmpty) {
+    return Firebase.app();
+  }
+
+  try {
+    return await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } on FirebaseException catch (error) {
+    if (error.code == 'duplicate-app') {
+      return Firebase.app();
+    }
+
+    rethrow;
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -16,6 +36,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'My Personl Notes',
       theme: ThemeData(
         // This is the theme of your application.
@@ -35,7 +56,33 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const RegiserationScreen(),
+      home: FutureBuilder<FirebaseApp>(
+        future: _firebaseInitialization,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done &&
+              !snapshot.hasError) {
+            return const LoginScreen();
+          }
+
+          if (snapshot.hasError) {
+            return Scaffold(
+              body: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(24),
+                  child: Text(
+                    'Firebase failed to start:\n${snapshot.error}',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            );
+          }
+
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        },
+      ),
     );
   }
 }
