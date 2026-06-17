@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mypersonalnotes/Screens/login_screen.dart';
 import 'package:mypersonalnotes/Screens/splash_screen.dart';
+import 'package:mypersonalnotes/Screens/verifymail_screen.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -62,6 +64,14 @@ class MyApp extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done &&
               !snapshot.hasError) {
+            final user = FirebaseAuth.instance.currentUser;
+            if (user?.emailVerified ?? false) {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const VerifymailScreen(),
+                ),
+              );
+            }
             return const LoginScreen();
           }
 
