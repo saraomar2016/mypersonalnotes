@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mypersonalnotes/Screens/login_screen.dart';
+import 'package:mypersonalnotes/Services/auth_service.dart';
 import 'package:mypersonalnotes/Widgets/input_field.dart';
 import '../Widgets/social_button.dart';
 
@@ -229,7 +230,27 @@ class _RegiserationScreenState extends State<RegiserationScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SocialButton(child: const GoogleLogo(), onTap: () {}),
+                        SocialButton(
+                          child: const GoogleLogo(),
+                          onTap: () {
+                            try {
+                              final cred = AuthService().signInWithGoogle();
+                              if (cred != null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Google Sign-In successful!'),
+                                  ),
+                                );
+                              }
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Google Sign-In error: $e'),
+                                ),
+                              );
+                            }
+                          },
+                        ),
                         const SizedBox(width: 28),
                         SocialButton(
                           icon: Icons.facebook_rounded,
