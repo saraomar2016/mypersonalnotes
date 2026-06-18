@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mypersonalnotes/Constants/dialogs.dart';
 import 'package:mypersonalnotes/Constants/routes.dart';
 import 'package:mypersonalnotes/Screens/registeration_screen.dart';
 import 'package:mypersonalnotes/Services/auth_service.dart';
@@ -103,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     const Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Username / E-Mail',
+                        'Email',
                         style: TextStyle(
                           fontSize: 14,
                           color: Color(0xFF24133F),
@@ -116,7 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     InputField(
                       controller: _usernameController,
-                      hintText: 'Enter your Username or E-Mail',
+                      hintText: 'Enter your Email',
                       icon: Icons.person_outline_rounded,
                     ),
 
@@ -187,6 +188,22 @@ class _LoginScreenState extends State<LoginScreen> {
                               notesRoute,
                               (route) => false,
                             );
+                          } on FirebaseAuthException catch (e) {
+                            String message;
+                            switch (e.code) {
+                              case 'user-not-found':
+                                message = 'No user found for that email.';
+                                break;
+                              case 'wrong-password':
+                                message = 'Wrong password provided.';
+                                break;
+                              default:
+                                message = 'Login failed: ${e.message}';
+                            }
+
+                            if (!context.mounted) return;
+
+                            showErrorDialog(context, 'Login Error', message);
                           } catch (error) {
                             if (!context.mounted) return;
 

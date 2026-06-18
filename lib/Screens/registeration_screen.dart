@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mypersonalnotes/Constants/dialogs.dart';
+import 'package:mypersonalnotes/Constants/routes.dart';
 import 'package:mypersonalnotes/Screens/login_screen.dart';
 import 'package:mypersonalnotes/Screens/notes_screen.dart';
 import 'package:mypersonalnotes/Services/auth_service.dart';
@@ -103,7 +105,7 @@ class _RegiserationScreenState extends State<RegiserationScreen> {
                     const Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'Username / E-Mail',
+                        'Email',
                         style: TextStyle(
                           fontSize: 14,
                           color: Color(0xFF24133F),
@@ -115,7 +117,7 @@ class _RegiserationScreenState extends State<RegiserationScreen> {
                     const SizedBox(height: 8),
                     InputField(
                       controller: _usernameController,
-                      hintText: 'Enter your Username or E-Mail',
+                      hintText: 'Enter your Email',
                       icon: Icons.person_outline_rounded,
                     ),
 
@@ -181,11 +183,38 @@ class _RegiserationScreenState extends State<RegiserationScreen> {
 
                             if (!context.mounted) return;
 
-                            Navigator.pushReplacement(
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              notesRoute,
+                              (route) => false,
+                            );
+                          } on FirebaseAuthException catch (e) {
+                            String errorMessage;
+                            switch (e.code) {
+                              case 'email-already-in-use':
+                                errorMessage =
+                                    'The email is already in use by another account.';
+                                break;
+                              case 'invalid-email':
+                                errorMessage =
+                                    'The email address is not valid.';
+                                break;
+                              case 'operation-not-allowed':
+                                errorMessage =
+                                    'Email/password accounts are not enabled.';
+                                break;
+                              case 'weak-password':
+                                errorMessage =
+                                    'The password is too weak. Please choose a stronger password.';
+                                break;
+                              default:
+                                errorMessage =
+                                    'Registration failed: ${e.message}';
+                            }
+
+                            showErrorDialog(
                               context,
-                              MaterialPageRoute(
-                                builder: (context) => NotesScreen(),
-                              ),
+                              'Register Error',
+                              errorMessage,
                             );
                           } catch (error) {
                             if (!context.mounted) return;
@@ -236,12 +265,10 @@ class _RegiserationScreenState extends State<RegiserationScreen> {
                           child: const GoogleLogo(),
                           onTap: () {
                             try {
-                              final cred = AuthService().signInWithGoogle();
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => NotesScreen(),
-                                ),
+                              AuthService().signInWithGoogle();
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                notesRoute,
+                                (route) => false,
                               );
                             } catch (e) {
                               ScaffoldMessenger.of(context).showSnackBar(
