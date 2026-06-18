@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mypersonalnotes/Screens/login_screen.dart';
+import 'package:mypersonalnotes/Screens/notes_screen.dart';
+import 'package:mypersonalnotes/Screens/registeration_screen.dart';
 import 'package:mypersonalnotes/Screens/splash_screen.dart';
 import 'package:mypersonalnotes/Screens/verifymail_screen.dart';
 import 'firebase_options.dart';
@@ -92,6 +94,12 @@ class MyApp extends StatelessWidget {
           return const Scaffold(body: Center(child: SplashScreen()));
         },
       ),
+      routes: {
+        '/login/': (context) => const LoginScreen(),
+        '/verify-mail/': (context) => const VerifymailScreen(),
+        '/notes/': (context) => const NotesScreen(),
+        '/register/': (context) => const RegiserationScreen(),
+      },
     );
   }
 }

@@ -183,11 +183,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
                             if (!context.mounted) return;
 
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => NotesScreen(),
-                              ),
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                              '/notes/',
+                              (route) => false,
                             );
                           } catch (error) {
                             if (!context.mounted) return;
