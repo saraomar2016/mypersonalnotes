@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:mypersonalnotes/Screens/notes_screen.dart';
+import 'package:mypersonalnotes/Constants/routes.dart';
 import 'package:mypersonalnotes/Screens/registeration_screen.dart';
 import 'package:mypersonalnotes/Services/auth_service.dart';
 import 'package:mypersonalnotes/Widgets/input_field.dart';
@@ -184,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             if (!context.mounted) return;
 
                             Navigator.of(context).pushNamedAndRemoveUntil(
-                              '/notes/',
+                              notesRoute,
                               (route) => false,
                             );
                           } catch (error) {
@@ -235,11 +235,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           onTap: () {
                             try {
                               AuthService().signInWithGoogle();
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const NotesScreen(),
-                                ),
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                notesRoute,
+                                (route) => false,
                               );
                             } catch (e) {
                               ScaffoldMessenger.of(context).showSnackBar(

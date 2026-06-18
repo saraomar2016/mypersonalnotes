@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:mypersonalnotes/Constants/routes.dart';
 import 'package:mypersonalnotes/Screens/login_screen.dart';
 import 'package:mypersonalnotes/Screens/notes_screen.dart';
 import 'package:mypersonalnotes/Screens/registeration_screen.dart';
@@ -95,10 +96,10 @@ class MyApp extends StatelessWidget {
         },
       ),
       routes: {
-        '/login/': (context) => const LoginScreen(),
-        '/verify-mail/': (context) => const VerifymailScreen(),
-        '/notes/': (context) => const NotesScreen(),
-        '/register/': (context) => const RegiserationScreen(),
+        loginRoute: (context) => const LoginScreen(),
+        verifyEmailRoute: (context) => const VerifymailScreen(),
+        notesRoute: (context) => const NotesScreen(),
+        registerRoute: (context) => const RegiserationScreen(),
       },
     );
   }
