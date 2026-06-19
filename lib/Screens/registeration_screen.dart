@@ -183,10 +183,7 @@ class _RegiserationScreenState extends State<RegiserationScreen> {
 
                             if (!context.mounted) return;
 
-                            Navigator.of(context).pushNamedAndRemoveUntil(
-                              notesRoute,
-                              (route) => false,
-                            );
+                            Navigator.of(context).pushNamed(verifyEmailRoute);
                           } on FirebaseAuthException catch (e) {
                             String errorMessage;
                             switch (e.code) {

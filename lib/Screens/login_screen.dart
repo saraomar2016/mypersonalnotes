@@ -197,6 +197,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               case 'wrong-password':
                                 message = 'Wrong password provided.';
                                 break;
+                              case 'invalid-email':
+                                message = 'The email address is not valid.';
+                                break;
                               default:
                                 message = 'Login failed: ${e.message}';
                             }
